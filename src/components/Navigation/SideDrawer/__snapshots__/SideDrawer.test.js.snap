@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SideDrawer /> <SideDrawer show/> should render open drawer 1`] = `ShallowWrapper {}`;
+
+exports[`<SideDrawer /> <SideDrawer show={false}/> should render close drawer 1`] = `ShallowWrapper {}`;
