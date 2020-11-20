@@ -16,7 +16,7 @@ const Orders = ({ orders, onFetchOrders, loading }) => {
 				<Spinner />
 			) : (
 				!!orders &&
-				orders.map((order) => <Order key={order.id} ingredients={order.ingredients} price={order.price} />)
+				orders.map((order) => <Order key={order.id} ingredients={order.ingredients} price={order.price.toFixed(2)} />)
 			)}
 		</div>
 	);
