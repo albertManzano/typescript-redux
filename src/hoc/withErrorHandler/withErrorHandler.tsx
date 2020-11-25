@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from 'react'; /* eslint-disable-line */
 import './withErrorHandler.sass';
+
+import React, { useEffect, useState } from 'react';
+
 import Modal from '../../components/UI/Modal/Modal';
-import Aux from '../Aux/Aux';
-import BurguerConstructor from '../../containers/BurgerConstructor/BurguerConstructor';
-import Axios from 'axios';
 
 function withErrorHandler(WrappedComponent, axios) {
-	let error = null;
+  let error = null;
 
-	useEffect(
-		() => {
-			axios.interceptors.request.use((req: object) => {
-				error = null;
-				return req;
-			});
-			axios.interceptors.response.use((res: object) => res, (err) => (error = err));
-		},[]
-	);
+  useEffect(() => {
+    axios.interceptors.request.use((req: object) => {
+      error = null;
+      return req;
+    });
+    axios.interceptors.response.use(
+      (res: object) => res,
+      (err) => (error = err),
+    );
+  }, []);
 
-	const errorHandler = () => {
-		error = null;
-	};
+  const errorHandler = () => {
+    error = null;
+  };
 
-	return (
-		<Aux>
-			<Modal show={error} modalClosed={errorHandler}>
-				{error ? error : null}
-			</Modal>
-			<WrappedComponent props={WrappedComponent.props} />
-		</Aux>
-	);
+  return (
+    <>
+      <Modal show={error} modalClosed={errorHandler}>
+        {error ? error : null}
+      </Modal>
+      <WrappedComponent props={WrappedComponent.props} />
+    </>
+  );
 }
 
 export default withErrorHandler;

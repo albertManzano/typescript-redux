@@ -7,26 +7,28 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import burguerConstructorReducer from './store/reducers/burguerConstructor';
+import burgerConstructorReducer from './store/reducers/burgerConstructor';
 import orderReducer from './store/reducers/order';
 
-const composeEnhancers = (window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose) || compose;
+const composeEnhancers =
+  (window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] as typeof compose) || compose;
 
 const rootReducer = combineReducers({
-	burguerConstructor: burguerConstructorReducer,
-	order: orderReducer
-})
+  burguerConstructor: burgerConstructorReducer,
+  order: orderReducer,
+});
 
-const store = createStore(rootReducer, composeEnhancers(
-	applyMiddleware(thunk)
-));
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(thunk)),
+);
 
 const app = (
-	<Provider store={store}>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
-	</Provider>
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
 );
 
 ReactDOM.render(app, document.getElementById('root'));

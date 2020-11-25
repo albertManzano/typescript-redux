@@ -11,7 +11,7 @@ node_modules/**/*
 .history
 
 # End of https://www.gitignore.io/api/visualstudiocode
-
+.env
 
 # Created by https://www.gitignore.io/api/compressed
 # Edit at https://www.gitignore.io/?templates=compressed

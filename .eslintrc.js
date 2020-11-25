@@ -4,7 +4,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier/@typescript-eslint',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
   ],
   parserOptions: {
     ecmaVersion: 6,
@@ -14,7 +14,15 @@ module.exports = {
     },
   },
   rules: {
-    "no-use-before-define": ["error", { "variables": false }]  },
+    'no-use-before-define': ['error', { variables: false }],
+    '@typescript-eslint/explicit-module-boundary-types': ['off'],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
+  },
   settings: {
     react: {
       version: 'detect',
