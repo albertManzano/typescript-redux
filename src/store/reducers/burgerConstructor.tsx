@@ -1,10 +1,12 @@
 import * as actionTypes from '../actions/actionTypes';
 import Iingredients from '../../interfaces/ingredients';
 import { updateObject } from '../utility';
+import IStoreBurgerConstructor from '../../interfaces/stores/istore-burger-constructor';
+import Iingredient from '../../interfaces/ingredient';
 
 const initialState: {
   loading: boolean;
-  ingredients: Iingredients | null;
+  ingredients: null | Iingredients;
   totalPrice: number;
   error: boolean;
 } = {
@@ -21,7 +23,7 @@ const INGREDIENT_PRICES: Iingredients = {
   bacon: 0.7,
 };
 
-const addIngredient = (state, action) => {
+const addIngredient = (state: IStoreBurgerConstructor, action: Iingredient) => {
   if (state.ingredients == null) return state;
   const updatedIngredient = {
     [action.ingredient]: state.ingredients[action.ingredient] + 1,
@@ -34,7 +36,10 @@ const addIngredient = (state, action) => {
   return updateObject(state, updatedState);
 };
 
-const removeIngredient = (state, action) => {
+const removeIngredient = (
+  state: IStoreBurgerConstructor,
+  action: Iingredient,
+) => {
   if (state.ingredients == null) return state;
   if (state.ingredients[action.ingredient] < 0) return state;
   if (state.ingredients == null) return state;
@@ -52,7 +57,10 @@ const removeIngredient = (state, action) => {
   return updateObject(state, _updatedState);
 };
 
-const setIngredients = (state, action) => {
+const setIngredients = (
+  state: IStoreBurgerConstructor,
+  action: { ingredients: Iingredients },
+) => {
   if (action.ingredients == null) return state;
   return updateObject(state, {
     ingredients: {
@@ -67,11 +75,11 @@ const setIngredients = (state, action) => {
   });
 };
 
-const resetIngredients = (state) => {
+const resetIngredients = (state: IStoreBurgerConstructor) => {
   return updateObject(state, { ingredients: initialState.ingredients });
 };
 
-const fetchIngredientsFailed = (state) => {
+const fetchIngredientsFailed = (state: IStoreBurgerConstructor) => {
   return updateObject(state, {
     error: true,
   });

@@ -5,5 +5,5 @@ export default interface order {
   name: string | void;
   street: string | void;
   zipCode: string | void;
-  id?: string;
+  id: string;
 }

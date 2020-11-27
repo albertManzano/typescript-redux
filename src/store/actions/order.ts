@@ -1,9 +1,9 @@
 import * as actionTypes from './actionTypes';
 import api from '../../api';
 import { Dispatch } from 'redux';
-import Order from '../../interfaces/order';
+import order from '../../interfaces/order';
 
-export const purchaseBurguerSuccess = (id: string, orderData) => {
+export const purchaseBurguerSuccess = (id: string, orderData: order) => {
   return {
     type: actionTypes.PURCHASE_BURGUER_SUCCESS,
     id,
@@ -30,7 +30,7 @@ export const purchaseInit = () => {
   };
 };
 
-export const purchaseBuguer = (orderData) => {
+export const purchaseBuguer = (orderData: order) => {
   return (dispatch: Dispatch) => {
     dispatch(purchaseBurguerStart());
     api
@@ -44,7 +44,7 @@ export const purchaseBuguer = (orderData) => {
   };
 };
 
-export const fetchOrdersSuccess = (orders) => {
+export const fetchOrdersSuccess = (orders: order[] = []) => {
   return {
     type: actionTypes.FETCH_ORDERS_SUCCESS,
     orders,
@@ -70,8 +70,8 @@ export const fetchOrders = () => {
     api
       .get('/orders.json')
       .then(({ data }) => {
-        const fetchedOrders = new Array<Order>();
-        for (let key in data) {
+        const fetchedOrders = new Array<order>();
+        for (const key in data) {
           fetchedOrders.push({
             ...data[key],
             id: key,

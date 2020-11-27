@@ -1,6 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
-import Order from '../../interfaces/order';
+import order from '../../interfaces/order';
 import { updateObject } from '../utility';
+import IStoreOrderState from '../../interfaces/stores/istore-order-state';
 
 const initialState = {
   orders: [],
@@ -8,19 +9,23 @@ const initialState = {
   purchased: false,
 };
 
-const purchaseInit = (state) => {
+const purchaseInit = (state: IStoreOrderState) => {
   return updateObject(state, { purchased: false });
 };
 
-const purchaseStart = (state) => {
+const purchaseStart = (state: IStoreOrderState) => {
   return updateObject(state, { loading: true });
 };
 
-const purchaseBurguerSuccess = (state, action) => {
+const purchaseBurguerSuccess = (
+  state: IStoreOrderState,
+  action: any,
+  // action: { orderData: order; id: string },
+) => {
   const newOrder: any = updateObject(action.orderData, {
     id: action.id,
   });
-
+  console.log(newOrder);
   return updateObject(state, {
     loading: false,
     purchased: true,
@@ -28,18 +33,21 @@ const purchaseBurguerSuccess = (state, action) => {
   });
 };
 
-const fetchOrdersInit = (state) => {
+const fetchOrdersInit = (state: IStoreOrderState) => {
   return updateObject(state, { loading: true });
 };
 
-const fetchOrdersSuccess = (state, action) => {
+const fetchOrdersSuccess = (
+  state: IStoreOrderState,
+  action: { orders: order[] },
+) => {
   return updateObject(state, {
     orders: action.orders,
     loading: false,
   });
 };
 
-const fecthOrdersFailed = (state) => {
+const fecthOrdersFailed = (state: IStoreOrderState) => {
   return updateObject(state, { loading: false });
 };
 
@@ -48,8 +56,8 @@ const orderReducer = (
   action: {
     type: string;
     id: string;
-    orderData: ConcatArray<object>;
-    orders: Array<Order>;
+    orderData: ConcatArray<order>;
+    orders: Array<order>;
   },
 ) => {
   switch (action.type) {

@@ -1,4 +1,5 @@
-import React,{ useEffect, useState } from 'react'; /* eslint-disable-line */
+/*eslint prefer-const: ["error", {"destructuring": "all"}]*/
+import React,{ useEffect, useState , useRef} from 'react'; /* eslint-disable-line */
 import { connect } from 'react-redux';
 import Burguer from '../../components/Burger/Burger';
 import BurgerController from '../../components/Burger/BurgerController/BurgerController';
@@ -20,7 +21,7 @@ interface IBurgerConstructor {
   onInitPurchased: () => boolean;
   onIngredientAdded: () => Iingredient;
   onIngredientRemoved: () => Iingredient;
-  onLoadIngredients: () => Iingredients | boolean;
+  onLoadIngredients: any;
   onResetIngredients: () => null;
 }
 
@@ -36,25 +37,25 @@ const BurgerConstructor = ({
   onLoadIngredients,
   onResetIngredients,
 }: IBurgerConstructor) => {
-  let disabledInfo = { ...ingredients };
-  const [, setDisabled] = useState(disabledInfo);
-  const [purchasable, setIsPurchasable] = useState<boolean>(false);
+  const [disabledInfo, setDisabled] = useState<Iingredients>({
+    ...ingredients,
+  });
+  const purchasable = useRef(false);
+  const [, setIsPurchasable] = useState<boolean>(purchasable.current);
   const [purchasing, setPurchasing] = useState<boolean>(false);
 
   useEffect(() => {
     onResetIngredients();
-    setIsPurchasable(false);
-    setPurchasing(false);
     onLoadIngredients();
-  }, [onLoadIngredients, onResetIngredients]);
+  }, [onResetIngredients, onLoadIngredients]);
 
   useEffect(() => {
     if (ingredients) {
-      disabledInfo = { ...ingredients };
-      for (const key in disabledInfo) {
-        disabledInfo[key] = disabledInfo[key] <= 0;
+      const _disabledInfo = { ...disabledInfo, ...ingredients };
+      for (const key in _disabledInfo) {
+        _disabledInfo[key] = _disabledInfo[key] <= 0;
       }
-      setDisabled(disabledInfo);
+      setDisabled((_disabledInfo) => _disabledInfo);
       const checkPruchasable = { ...ingredients };
       const sum = Object.keys(ingredients)
         .map((ingreKey) => {
@@ -63,14 +64,13 @@ const BurgerConstructor = ({
         .reduce((sum, el) => {
           return sum + el;
         }, 0);
-      const isPurchasable = sum <= 0;
-      if (isPurchasable) setIsPurchasable(!purchasable);
+      setIsPurchasable((purchasable.current = sum <= 0));
     }
-  }, [ingredients]);
+  }, [ingredients, disabledInfo]);
 
   const purchaseHandler = () => setPurchasing(!purchasing);
 
-  const purchaseCancelHandler = () => setPurchasing(!purchasing);
+  const purchaseCancelHandler = () => setPurchasing(purchasing);
 
   const purchaseContinueHandle = () => {
     onInitPurchased();
@@ -100,7 +100,7 @@ const BurgerConstructor = ({
         <>
           <Burguer ingredients={ingredients} />
           <BurgerController
-            purchasable={purchasable}
+            purchasable={purchasable.current}
             added={onIngredientAdded}
             subtracted={onIngredientRemoved}
             disabled={disabledInfo}

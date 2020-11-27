@@ -14,6 +14,7 @@ import OrderForm from '../../../interfaces/forms/orderForm';
 import * as actions from '../../../store/actions/index';
 import ingredients from '../../../interfaces/ingredients';
 import Iingredients from '../../../interfaces/ingredients';
+import order from '../../../interfaces/order';
 
 interface IOrder {
   ingredients: ingredients;
@@ -22,7 +23,7 @@ interface IOrder {
 }
 
 interface IContactData {
-  onOrderBurguer: (order) => void;
+  onOrderBurguer: (order: IOrder) => void;
   loading: boolean;
   totalPrice: number;
   ingredients: Iingredients;
@@ -67,7 +68,10 @@ const ContactData = ({
     onOrderBurguer(order);
   };
 
-  const checkValidation = (value, rules) => {
+  const checkValidation = (
+    value: string,
+    rules: { required: boolean; minLength?: number; maxLength?: number },
+  ) => {
     let isValid = true;
     if (rules.required) isValid = value.trim() !== '' && isValid;
     if (rules.minLength) isValid = value.length >= rules.minLength && isValid;
@@ -75,7 +79,10 @@ const ContactData = ({
     return isValid;
   };
 
-  const onChangeHandler = (event, inputId: string) => {
+  const onChangeHandler = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    inputId: string,
+  ) => {
     const _form: OrderForm = { ...orderForm };
     const updatedElement = { ..._form[inputId] };
     updatedElement.value = event.target.value;
@@ -96,15 +103,16 @@ const ContactData = ({
         <>
           <h4 className="ContactData__label">Enter your contact data: </h4>
           <form className="ContactData__form">
-            {formElementsArray.map((formElement: FormElementsArray) => (
+            {formElementsArray.map(({ id, config }) => (
+              // eslint-disable-next-line react/jsx-key
               <Input
-                id={formElement.id}
-                elementType={formElement.config.elementType}
-                elementConfig={formElement.config.elementConfig}
-                value={formElement.config.value}
-                invalid={formElement.config.valid}
-                touched={formElement.config.touched}
-                changed={(event) => onChangeHandler(event, formElement.id)}
+                id={id}
+                elementType={config.elementType}
+                elementConfig={config.elementConfig}
+                value={config.value}
+                invalid={config.valid}
+                touched={config.touched}
+                changed={(event) => onChangeHandler(event, id)}
               />
             ))}
 
@@ -131,7 +139,8 @@ const mapStateToProps = (state: {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onOrderBurguer: (orderData) => dispatch(actions.purchaseBuguer(orderData)),
+    onOrderBurguer: (orderData: order) =>
+      dispatch(actions.purchaseBuguer(orderData)),
   };
 };
 

@@ -1,21 +1,12 @@
 import React, { ReactElement } from 'react'; /* eslint-disable-line */
 import './Input.sass';
 
-interface input {
-  type: string;
-  placeholder: string;
-}
-
-interface Options {
-  options: { value: string; displayValue: string }[];
-}
-
 interface IInput {
-  elementConfig: Options | JSX.IntrinsicAttributes;
+  elementConfig: any;
   id: string;
   elementType: string;
   value: string;
-  changed: () => void;
+  changed: (event) => void;
   invalid: boolean;
   touched: boolean;
 }
@@ -28,6 +19,7 @@ const Input = ({
   invalid,
   touched,
 }: IInput) => {
+  console.log(id);
   let inputElement: null | ReactElement;
   const red = touched && !invalid;
   switch (elementType) {
@@ -46,13 +38,8 @@ const Input = ({
       break;
     case 'select':
       inputElement = (
-        <select
-          key={id}
-          onChange={changed}
-          className="Input__element"
-          value={value}
-        >
-          {elementConfig.options.map(({ value, displayValue }) => (
+        <select onChange={changed} className="Input__element" value={value}>
+          {elementConfig?.options?.map(({ value, displayValue }) => (
             <option key={value} value={value}>
               {displayValue}
             </option>
@@ -63,6 +50,7 @@ const Input = ({
     default:
       inputElement = (
         <input
+          key={id}
           className={
             red ? 'Input__element Input__element--invalid' : 'Input__element'
           }

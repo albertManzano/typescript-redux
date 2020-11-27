@@ -5,22 +5,25 @@ import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSumm
 import * as actionTypes from '../../store/actions/index';
 import ingredients from '../../interfaces/ingredients';
 import ContactData from './ContactData/ContactData';
+import { History } from 'history';
 
-const Checkout: React.FC<{
+interface ICheckout {
   onInitPurchase: () => boolean;
-  history: any;
+  history: History;
   match;
   ingredients: ingredients;
   onLoadIngredients: () => ingredients;
   purchased: boolean;
-}> = ({
+}
+
+const Checkout = ({
   onInitPurchase,
   history,
   match,
   ingredients,
   onLoadIngredients,
   purchased,
-}) => {
+}: ICheckout) => {
   const purchaseCancelled = () => {
     onLoadIngredients();
     history.goBack();
@@ -30,7 +33,7 @@ const Checkout: React.FC<{
 
   useEffect(() => {
     onInitPurchase();
-  }, []);
+  }, [onInitPurchase]);
 
   return (
     <div>
@@ -70,5 +73,3 @@ const mapDispatchToProps = (dispatch: any) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
-
-//^(?=.{8,12}$)(?=[^A-Z]*[A-Z])(?=\D*\d)(?=(?:[^a-z]*[a-z]){3})(?=[^\s#*.!?$]*[#*.!?$])(?!.*(.)\1)(?:[a-z]|[A-Z])[a-zA-Z0-9#*.!?$,]+$
