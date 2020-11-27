@@ -2,7 +2,7 @@
 
 welcome to the Burguer App where you can order and check your previous orders!
 
-![gif hamburguer](https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif)
+![gif hamburger](https://media.giphy.com/media/12uXi1GXBibALC/giphy.gif)
 
 
 ## Description

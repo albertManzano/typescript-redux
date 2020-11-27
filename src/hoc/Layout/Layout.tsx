@@ -1,26 +1,27 @@
-import React, { FunctionComponent, useState } from 'react'; /* eslint-disable-line */
-import Aux from '../Aux/Aux';
+import React, { FunctionComponent, ReactChildren, useState } from 'react'; /* eslint-disable-line */
+import './Layout.sass';
+
 import Navigator from '../../components/Navigation/Navigator/Navigator';
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 
-import './Layout.sass';
+interface ILayout {
+  children: JSX.IntrinsicAttributes;
+}
 
-const Layout: FunctionComponent = ({ children }) => {
-	let [ show, setShown ] = useState<boolean>(false);
+const Layout = ({ children }: ILayout) => {
+  const [show, setShown] = useState<boolean>(false);
 
-	function toggleDrawer() {
-		setShown(() => {
-			return !show;
-		});
-	}
+  function toggleDrawer() {
+    setShown(!show);
+  }
 
-	return (
-		<Aux>
-			<Navigator clicked={toggleDrawer} />
-			<SideDrawer show={show} clickBack={toggleDrawer} />
-			<main className="container">{children}</main>
-		</Aux>
-	);
+  return (
+    <>
+      <Navigator clicked={toggleDrawer} />
+      <SideDrawer show={show} clickBack={toggleDrawer} />
+      <main className="container">{children}</main>
+    </>
+  );
 };
 
 export default Layout;
