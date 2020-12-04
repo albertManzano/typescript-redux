@@ -3,22 +3,50 @@ import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
 import Order from '../../components/Order/Order';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import order from '../../interfaces/order';
+import Iingredients from '../../interfaces/ingredients';
 // import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
-const Orders = ({ orders, onFetchOrders, loading }) => {
+interface IOrders {
+  orders:
+    | [
+        {
+          order: {
+            id: string;
+            price: number;
+            ingredients: Iingredients;
+          };
+        },
+      ]
+    | [];
+  onFetchOrders: () => order[] | [];
+  loading: boolean;
+}
+
+interface IOrderMap {
+  order: {
+    id: string;
+    price: number;
+    ingredients: Iingredients;
+  };
+  price: number;
+  ingredients: Iingredients;
+}
+
+const Orders = ({ orders, onFetchOrders, loading }: IOrders) => {
   useEffect(() => {
     onFetchOrders();
   }, [onFetchOrders]);
-
   return (
     <div>
       {loading ? (
         <Spinner />
       ) : (
         !!orders &&
-        orders.map((order) => (
+        (orders as Array<IOrderMap>).map((order) => (
+          // eslint-disable-next-line react/jsx-key
           <Order
-            key={order.id}
+            order={order}
             ingredients={order.ingredients}
             price={order.price.toFixed(2)}
           />

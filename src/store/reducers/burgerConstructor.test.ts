@@ -1,12 +1,15 @@
 import * as actionTypes from '../actions/actionTypes';
 import reducer from './burgerConstructor';
-// import sinon from 'sinon';
-import Iingredients from '../../interfaces/ingredients';
 
 describe('burguerConstructor reducer', () => {
   const initialState: {
     loading: boolean;
-    ingredients: Iingredients | null;
+    ingredients: {
+      salad: number;
+      cheese: number;
+      meat: number;
+      bacon: number;
+    } | null;
     totalPrice: number;
     error: boolean;
   } = {
@@ -16,7 +19,12 @@ describe('burguerConstructor reducer', () => {
     loading: true,
   };
 
-  const INGREDIENT_PRICES: Iingredients = {
+  const INGREDIENT_PRICES: {
+    salad: number;
+    cheese: number;
+    meat: number;
+    bacon: number;
+  } = {
     salad: 0.5,
     cheese: 0.4,
     meat: 1.3,
@@ -146,19 +154,3 @@ describe('burguerConstructor reducer', () => {
     expect;
   });
 });
-
-// switch (action.type) {
-//     case actionTypes.RESET_INGREDIENTS:
-//         return resetIngredients(state, action);
-//     case actionTypes.ADD_INGREDIENT:
-//         return addIngredient(state, action);
-//     case actionTypes.REMOVE_INGREDIENT:
-//         return removeIngredient(state, action);
-//     case actionTypes.SET_INGREDIENTS:
-//         return setIngredients(state, action);
-//     case actionTypes.FETCH_INGREDIENTS_FAILED:
-//         return fetchIngredientsFailed(state, action);
-//     default:
-//         return state;
-// }
-// };

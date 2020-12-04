@@ -6,7 +6,7 @@ import BurguerConstructor from './BurgerConstructor';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { loadIngredients } from '../../store/actions/burguerConstructor';
+import { loadIngredients } from '../../store/actions/burgerConstructor';
 
 configure({ adapter: new Adapter() });
 
@@ -43,9 +43,5 @@ describe('<BurguerConstrutor />', () => {
     const dispatchSpy = sinon.spy(store, 'dispatch');
     await store.dispatch(() => loadIngredients());
     expect(dispatchSpy.called).toBe(true);
-  });
-
-  it('should return ingredients ', () => {
-    console.log(store.getActions);
   });
 });

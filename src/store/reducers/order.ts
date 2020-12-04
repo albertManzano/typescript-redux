@@ -19,13 +19,11 @@ const purchaseStart = (state: IStoreOrderState) => {
 
 const purchaseBurguerSuccess = (
   state: IStoreOrderState,
-  action: any,
-  // action: { orderData: order; id: string },
+  action: { orderData: order; id: string },
 ) => {
   const newOrder: any = updateObject(action.orderData, {
     id: action.id,
   });
-  console.log(newOrder);
   return updateObject(state, {
     loading: false,
     purchased: true,
@@ -51,15 +49,7 @@ const fecthOrdersFailed = (state: IStoreOrderState) => {
   return updateObject(state, { loading: false });
 };
 
-const orderReducer = (
-  state = initialState,
-  action: {
-    type: string;
-    id: string;
-    orderData: ConcatArray<order>;
-    orders: Array<order>;
-  },
-) => {
+const orderReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case actionTypes.PURCHASE_INIT:
       return purchaseInit(state);

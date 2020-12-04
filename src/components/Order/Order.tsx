@@ -1,21 +1,21 @@
 import React from 'react'; /* eslint-disable-line */
 import './Order.sass';
 
-const Order = ({ key, price, ingredients }) => {
+const Order = ({ order, price, ingredients }) => {
   interface Ingredients {
     name: string;
     amount: number;
   }
   const ingredientsArray: Ingredients[] = [];
-  for (let ingreName in ingredients) {
+  for (const ingreName in ingredients) {
     ingredientsArray.push({
       name: ingreName,
       amount: ingredients[ingreName],
     });
   }
-
+  debugger
   return (
-    <div className="Order" key={key}>
+    <div className="Order" key={order.id}>
       Ingredients:{' '}
       {ingredientsArray.map((ig) => {
         return (

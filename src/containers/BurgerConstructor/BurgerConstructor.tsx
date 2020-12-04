@@ -10,6 +10,8 @@ import * as actionTypes from '../../store/actions';
 import Iingredients from '../../interfaces/ingredients';
 import Iingredient from '../../interfaces/ingredient';
 import { History } from 'history';
+import WithErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import api from '../../api';
 
 interface IBurgerConstructor {
   error: boolean;
@@ -37,36 +39,31 @@ const BurgerConstructor = ({
   onLoadIngredients,
   onResetIngredients,
 }: IBurgerConstructor) => {
-  const [disabledInfo, setDisabled] = useState<Iingredients>({
-    ...ingredients,
-  });
-  const purchasable = useRef(false);
-  const [, setIsPurchasable] = useState<boolean>(purchasable.current);
   const [purchasing, setPurchasing] = useState<boolean>(false);
 
   useEffect(() => {
     onResetIngredients();
     onLoadIngredients();
-  }, [onResetIngredients, onLoadIngredients]);
-
-  useEffect(() => {
+  }, [onLoadIngredients]);
+  const updatePurchaseState = (ingredients: Iingredients) => {
     if (ingredients) {
-      const _disabledInfo = { ...disabledInfo, ...ingredients };
-      for (const key in _disabledInfo) {
-        _disabledInfo[key] = _disabledInfo[key] <= 0;
-      }
-      setDisabled((_disabledInfo) => _disabledInfo);
-      const checkPruchasable = { ...ingredients };
       const sum = Object.keys(ingredients)
-        .map((ingreKey) => {
-          return checkPruchasable[ingreKey];
+        .map((igKey) => {
+          return ingredients[igKey];
         })
         .reduce((sum, el) => {
           return sum + el;
         }, 0);
-      setIsPurchasable((purchasable.current = sum <= 0));
+      return sum <= 0;
     }
-  }, [ingredients, disabledInfo]);
+  };
+
+  const disabledInfo = {
+    ...ingredients,
+  };
+  for (const key in disabledInfo) {
+    disabledInfo[key] = disabledInfo[key] <= 0;
+  }
 
   const purchaseHandler = () => setPurchasing(!purchasing);
 
@@ -100,7 +97,7 @@ const BurgerConstructor = ({
         <>
           <Burguer ingredients={ingredients} />
           <BurgerController
-            purchasable={purchasable.current}
+            purchasable={updatePurchaseState(ingredients)}
             added={onIngredientAdded}
             subtracted={onIngredientRemoved}
             disabled={disabledInfo}
@@ -145,4 +142,7 @@ const mapDispacthToProps = (dispatch: any) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispacthToProps)(BurgerConstructor);
+export default connect(
+  mapStateToProps,
+  mapDispacthToProps,
+)(WithErrorHandler(BurgerConstructor, api));

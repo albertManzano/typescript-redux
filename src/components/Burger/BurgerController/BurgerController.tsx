@@ -8,7 +8,7 @@ interface IBurgerController {
   subtracted: (type: string) => void;
   disabled: Iingredients;
   totalPrice: number;
-  purchasable: boolean;
+  purchasable: boolean | undefined;
   ordered: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 

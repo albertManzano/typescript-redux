@@ -3,7 +3,7 @@ import {
   addIngredient,
   loadIngredients,
   resetIngredients,
-} from './burguerConstructor';
+} from './burgerConstructor';
 import {
   purchaseBuguer,
   purchaseInit,

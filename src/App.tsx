@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'; /* eslint-disable-line */
-import './App.css';
 import Layout from './hoc/Layout/Layout';
 import BurgerConstructor from './containers/BurgerConstructor/BurgerConstructor';
 import Checkout from './containers/Checkout/Checkout';
