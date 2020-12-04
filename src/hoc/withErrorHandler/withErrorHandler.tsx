@@ -1,35 +1,23 @@
+/* eslint-disable react/display-name */
 import './withErrorHandler.sass';
 
-import React, { useEffect, useState } from 'react';
-
+import React from 'react'; /* eslint-disable-line */
+import useHttpErrorHandler from '../../hooks/http-error-handler';
 import Modal from '../../components/UI/Modal/Modal';
 
-function withErrorHandler(WrappedComponent, axios) {
-  let error = null;
+const withErrorHandler = (WrappedComponent, api) => {
+  return (props) => {
+    const [error, clearError] = useHttpErrorHandler(api);
 
-  useEffect(() => {
-    axios.interceptors.request.use((req: object) => {
-      error = null;
-      return req;
-    });
-    axios.interceptors.response.use(
-      (res: object) => res,
-      (err) => (error = err),
+    return (
+      <>
+        <Modal show={error} modalClosed={clearError}>
+          {error ? error : null}
+        </Modal>
+        <WrappedComponent {...props} />
+      </>
     );
-  }, []);
-
-  const errorHandler = () => {
-    error = null;
   };
-
-  return (
-    <>
-      <Modal show={error} modalClosed={errorHandler}>
-        {error ? error : null}
-      </Modal>
-      <WrappedComponent props={WrappedComponent.props} />
-    </>
-  );
-}
+};
 
 export default withErrorHandler;
